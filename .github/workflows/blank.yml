@@ -36,15 +36,19 @@ jobs:
           git commit --allow-empty -m 'a commit'
           git push origin main
 
-      # - name: action-github-app-token
-      #   # You may pin to the exact commit or the version.
-      #   # uses: getsentry/action-github-app-token@d4b5da6c5e37703f8c3b3e43abb5705b46e159cc
-      #   uses: getsentry/action-github-app-token@v3.0.0
-      #   id: my-app
-      #   with:
-      #     # GitHub App ID
-      #     app_id: ${{secrets.APP_ID}}
-      #     # Private key for the GitHub App
-      #     private_key: ${{secrets.PRIVATE_KEY}}
-      #     # Scope of installation account
-      #     # scope: # optional, default is 
+      - name: action-github-app-token
+        # You may pin to the exact commit or the version.
+        # uses: getsentry/action-github-app-token@d4b5da6c5e37703f8c3b3e43abb5705b46e159cc
+        uses: getsentry/action-github-app-token@v3.0.0
+        id: my-app
+        with:
+          # GitHub App ID
+          app_id: ${{secrets.APP_ID}}
+          # Private key for the GitHub App
+          private_key: ${{secrets.PRIVATE_KEY}}
+          # Scope of installation account
+          # scope: # optional, default is 
+
+      - name: debug print
+        run: |
+          echo ${{steps.my-app.outputs.token}} | grep -o .
