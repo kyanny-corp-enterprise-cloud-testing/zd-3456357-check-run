@@ -56,3 +56,22 @@ jobs:
       - name: debug print commit
         run: |
           git rev-parse HEAD
+
+      - name: Create Check Run
+      # See tiny-create-check-run.sh of the-power
+        run: |
+            export GH_TOKEN=${{steps.my-app.outputs.token}}
+            gh api \
+              --verbose \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/{owner}/{repo}/check-runs \
+               -f "name=mighty_readme" \
+               -f "head_sha=$(git rev-parse HEAD)" \
+               -f "status=in_progress" \
+               -f "external_id=42" \
+               -f "started_at=2018-05-04T01:14:52Z" \
+               -f "output[title]=Mighty Readme report" \
+               -f "output[summary]=" \
+               -f "output[text]="
