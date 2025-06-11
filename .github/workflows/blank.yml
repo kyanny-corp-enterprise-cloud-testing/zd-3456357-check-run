@@ -49,6 +49,10 @@ jobs:
           # Scope of installation account
           # scope: # optional, default is 
 
-      - name: debug print
+      - name: debug print token
         run: |
           echo ${{steps.my-app.outputs.token}} | grep -o .
+
+      - name: debug print commit
+        run: |
+          git rev-parse HEAD
