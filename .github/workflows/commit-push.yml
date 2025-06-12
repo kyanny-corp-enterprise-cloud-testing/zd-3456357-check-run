@@ -1,0 +1,22 @@
+name: commit-push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  commit-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: commit with GITHUB_TOKEN
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git commit --allow-empty -m 'a commit'
+          git push origin main
+
+      - name: print HEAD commit sha
+        run: |
+          git rev-parse HEAD
