@@ -1,0 +1,38 @@
+name: create-check-run
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-check-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: action-github-app-token
+        uses: getsentry/action-github-app-token@v3.0.0
+        id: my-app
+        with:
+          app_id: ${{secrets.APP_ID}}
+          private_key: ${{secrets.PRIVATE_KEY}}
+
+      # - name: debug print token
+      #   run: |
+      #     echo ${{steps.my-app.outputs.token}} | grep -o .
+
+      - name: debug print commit
+        run: |
+          git rev-parse HEAD
+
+      - name: Create Check Run
+        run: |
+            export GH_TOKEN=${{steps.my-app.outputs.token}}
+            gh api \
+              --verbose \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/{owner}/{repo}/check-runs \
+               -f "name=mighty_readme" \
+               -f "head_sha=$(git rev-parse HEAD)"
